@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Model artifacts (regenerated via train.py)
+model.pkl
+metrics.json
+
+# OS
+.DS_Store
