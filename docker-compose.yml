@@ -1,0 +1,43 @@
+services:
+  # Task 1: ML model API (trains at image build).
+  model-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+
+  # App 1 backend: FastAPI BFF -> model-api.
+  python-bff:
+    build: ./task2/python-bff
+    ports:
+      - "8001:8001"
+    environment:
+      MODEL_API_URL: http://model-api:8000
+    depends_on:
+      - model-api
+
+  # App 2 backend: Spring Boot -> model-api, reads housing dataset.
+  java-service:
+    build: ./task2/java-service
+    ports:
+      - "8080:8080"
+    environment:
+      MODEL_API_URL: http://model-api:8000
+    depends_on:
+      - model-api
+
+  # Next.js portal hosting both apps.
+  portal:
+    build: ./task2/portal
+    ports:
+      - "3000:3000"
+    environment:
+      # Browser calls use host-mapped ports (client defaults already match these).
+      NEXT_PUBLIC_BFF_URL: http://localhost:8001
+      NEXT_PUBLIC_MARKET_URL: http://localhost:8080
+      # Server-side (RSC) fetch uses the internal service name.
+      MARKET_API_INTERNAL: http://java-service:8080
+    depends_on:
+      - python-bff
+      - java-service
