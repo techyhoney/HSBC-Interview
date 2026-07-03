@@ -3,9 +3,12 @@ package com.hsbc.interview.market.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.net.http.HttpClient;
 
 /**
  * Wires the RestClient pointed at the Task 1 model API and enables CORS
@@ -19,8 +22,15 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     public RestClient modelApiClient() {
+        // Pin to HTTP/1.1: the JDK HttpClient defaults to HTTP/2 and sends an
+        // "Upgrade: h2c" header, which makes uvicorn (the model API server) drop
+        // the request body and return 422 for POST /predict.
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
         return RestClient.builder()
                 .baseUrl(modelApiUrl)
+                .requestFactory(new JdkClientHttpRequestFactory(httpClient))
                 .build();
     }
 
