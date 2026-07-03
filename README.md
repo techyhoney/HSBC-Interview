@@ -196,27 +196,3 @@ npm run dev
 ```bash
 pytest -v
 ```
-
-## Requirements Checklist
-
-### Task 1 ✓
-- [x] FastAPI with predict, model-info, health endpoints
-- [x] Single and batch predictions
-- [x] Scikit-learn Linear Regression
-- [x] Python 3.12+
-- [x] Dockerfile
-- [x] Swagger/OpenAPI documentation
-
-### Task 2 ✓
-- [x] Next.js App Router portal
-- [x] Unified navigation and layout
-- [x] App 1: Property Value Estimator (Python backend)
-- [x] App 2: Market Analysis (Java backend)
-- [x] Server and client components
-- [x] Form validation and error handling
-- [x] Interactive visualizations
-- [x] Responsive design with Tailwind CSS
-- [x] WCAG accessibility
-- [x] CSV/PDF export
-- [x] Caching implementation
-- [x] All technical requirements met

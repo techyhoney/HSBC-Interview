@@ -17,5 +17,11 @@ out/
 # Java
 target/
 
+# Images
+*.jpg
+*.jpeg
+*.png
+*.gif
+
 # OS
 .DS_Store
