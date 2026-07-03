@@ -1,15 +1,36 @@
-# Housing Price Prediction API
+# HSBC Interview Tasks - Property Price Platform
 
-A simple, production-style REST API that predicts housing prices using a
-scikit-learn **Linear Regression** model, served with **FastAPI** and
-containerised with **Docker**.
+Complete implementation of both interview tasks: a containerized ML model API and a multi-application Next.js portal.
 
-## Features
+## Overview
 
-- `GET /health` — health check.
-- `GET /model-info` — model coefficients, intercept and performance metrics (R², MAE, RMSE).
-- `POST /predict` — predict price for a single house or a batch.
-- Interactive Swagger UI at `/docs` (OpenAPI spec at `/openapi.json`).
+**Task 1**: Housing price prediction model API (FastAPI + scikit-learn)  
+**Task 2**: Multi-application Next.js portal with Python and Java backends
+
+## Quick Start
+
+```bash
+docker-compose up --build
+```
+
+Then visit:
+- **Portal**: http://localhost:3000 (Next.js apps)
+- **Model API**: http://localhost:8000/docs (Swagger UI)
+- **Python BFF**: http://localhost:8001/docs
+- **Java Service**: http://localhost:8080/api/health
+
+---
+
+## Task 1: Housing Price Prediction API
+
+FastAPI service that predicts housing prices using Linear Regression.
+
+### Features
+
+- `GET /health` — Health check
+- `GET /model-info` — Model coefficients and metrics (R², MAE, RMSE)
+- `POST /predict` — Single or batch predictions
+- Interactive Swagger UI at `/docs`
 
 ## Project structure
 
@@ -82,13 +103,120 @@ docker run -p 8000:8000 housing-api
 
 Then visit http://127.0.0.1:8000/docs.
 
-## How the model works (talking points)
+### Model Details
 
-- **Algorithm**: Ordinary Least Squares Linear Regression — predicts price as a
-  weighted sum of the seven features plus an intercept.
-- **Features**: `square_footage, bedrooms, bathrooms, year_built, lot_size,
-  distance_to_city_center, school_rating`.
-- **Evaluation**: an 80/20 train/test split (fixed `random_state=42`) reports
-  R², MAE and RMSE on unseen data.
-- **Why Linear Regression**: interpretable coefficients map directly to the
-  `/model-info` response, making it easy to explain how each feature moves price.
+- **Algorithm**: Linear Regression (OLS)
+- **Features**: `square_footage, bedrooms, bathrooms, year_built, lot_size, distance_to_city_center, school_rating`
+- **Evaluation**: 80/20 train/test split (R², MAE, RMSE)
+- **Why Linear Regression**: Interpretable coefficients for `/model-info` endpoint
+
+---
+
+## Task 2: Multi-Application Portal
+
+Unified Next.js portal hosting two independent applications with different backend technologies.
+
+### Applications
+
+**App 1: Property Value Estimator** (`/estimator`)
+- Python FastAPI backend
+- Property details form with validation
+- Price predictions with history tracking
+- Interactive charts
+- Side-by-side comparison view
+
+**App 2: Property Market Analysis** (`/market`)
+- Java Spring Boot backend
+- Market statistics dashboard
+- Filterable property segments
+- What-if scenario analysis
+- CSV/PDF export
+
+### Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
+- **Python BFF**: FastAPI, Pydantic, httpx
+- **Java Service**: Spring Boot 3.4.4, Java 21, Caffeine cache
+
+See [`task2/README.md`](task2/README.md) for detailed documentation.
+
+---
+
+## Repository Structure
+
+```
+.
+├── app/                    # Task 1: Model API
+├── data/                   # Housing dataset
+├── task2/                  # Task 2: Portal + backends
+│   ├── portal/            # Next.js application
+│   ├── python-bff/        # App 1 backend
+│   └── java-service/      # App 2 backend
+├── tests/                  # API tests
+├── train.py               # Model training script
+├── Dockerfile             # Task 1 container
+└── docker-compose.yml     # All services
+```
+
+## Development
+
+### Local Setup (without Docker)
+
+**1. Train the model:**
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python train.py
+```
+
+**2. Run Task 1 API:**
+```bash
+uvicorn app.main:app --reload
+```
+
+**3. Run Task 2 services:**
+```bash
+# Python BFF
+cd task2/python-bff
+pip install -r requirements.txt
+MODEL_API_URL=http://localhost:8000 uvicorn app.main:app --port 8001 --reload
+
+# Java Service
+cd task2/java-service
+mvn spring-boot:run
+
+# Next.js Portal
+cd task2/portal
+npm install
+npm run dev
+```
+
+### Testing
+
+```bash
+pytest -v
+```
+
+## Requirements Checklist
+
+### Task 1 ✓
+- [x] FastAPI with predict, model-info, health endpoints
+- [x] Single and batch predictions
+- [x] Scikit-learn Linear Regression
+- [x] Python 3.12+
+- [x] Dockerfile
+- [x] Swagger/OpenAPI documentation
+
+### Task 2 ✓
+- [x] Next.js App Router portal
+- [x] Unified navigation and layout
+- [x] App 1: Property Value Estimator (Python backend)
+- [x] App 2: Market Analysis (Java backend)
+- [x] Server and client components
+- [x] Form validation and error handling
+- [x] Interactive visualizations
+- [x] Responsive design with Tailwind CSS
+- [x] WCAG accessibility
+- [x] CSV/PDF export
+- [x] Caching implementation
+- [x] All technical requirements met

@@ -1,9 +1,9 @@
-"""Pydantic schemas for request/response validation and Swagger examples."""
+"""Request and response schemas."""
 from pydantic import BaseModel, Field
 
 
 class HousingFeatures(BaseModel):
-    """Features describing a single house."""
+    """Property features for prediction."""
 
     square_footage: float = Field(..., gt=0, description="Interior area in square feet")
     bedrooms: int = Field(..., ge=0, description="Number of bedrooms")
@@ -31,7 +31,7 @@ class HousingFeatures(BaseModel):
 
 
 class PredictRequest(BaseModel):
-    """Wraps one or more houses. A single prediction is just a list of one."""
+    """Batch prediction request."""
 
     items: list[HousingFeatures] = Field(..., min_length=1, description="Houses to predict")
 

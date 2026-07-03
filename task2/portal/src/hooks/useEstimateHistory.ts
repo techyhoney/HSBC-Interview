@@ -5,10 +5,7 @@ import type { EstimateHistoryItem, EstimateResponse } from "@/lib/types";
 
 const STORAGE_KEY = "estimate-history";
 
-/**
- * Persists previous estimates in localStorage so the user can review and
- * compare them across sessions.
- */
+// Manages estimate history with localStorage persistence.
 export function useEstimateHistory() {
   const [history, setHistory] = useState<EstimateHistoryItem[]>([]);
 

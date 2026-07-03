@@ -15,8 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Loads the housing dataset CSV from the classpath once at startup and keeps
- * the parsed rows in memory for aggregate queries.
+ * Loads and caches housing dataset from CSV.
  */
 @Service
 public class DatasetService {

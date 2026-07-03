@@ -1,10 +1,4 @@
-"""Train a Linear Regression model on the housing dataset.
-
-Run:  python train.py
-
-Loads the housing dataset CSV, fits sklearn LinearRegression, evaluates on a held-out
-test split, then saves model.pkl and metrics.json for the API to serve.
-"""
+"""Train and save the Linear Regression model."""
 import json
 
 import joblib

@@ -1,11 +1,4 @@
-/**
- * API base URLs.
- *
- * - `*_PUBLIC_*` are used by client components (the browser), so they point at
- *   host-mapped ports (localhost) in dev/compose.
- * - The server-only Java URL is used by React Server Components; inside Docker
- *   it resolves to the internal service name.
- */
+// API base URLs for client and server components.
 export const BFF_URL =
   process.env.NEXT_PUBLIC_BFF_URL ?? "http://localhost:8001";
 

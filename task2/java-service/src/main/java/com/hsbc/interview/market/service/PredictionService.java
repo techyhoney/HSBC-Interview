@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Forwards what-if feature payloads to the Task 1 model API `/predict`.
+ * Model API integration for what-if predictions.
  */
 @Service
 public class PredictionService {

@@ -12,7 +12,7 @@ const COLUMNS: { key: keyof Property; label: string }[] = [
   { key: "price", label: "Price" },
 ];
 
-/** Generate a CSV file from the current property rows and trigger a download. */
+// Export properties to CSV.
 export function exportCsv(rows: Property[], filename = "properties.csv") {
   const header = COLUMNS.map((c) => c.label).join(",");
   const lines = rows.map((r) => COLUMNS.map((c) => r[c.key]).join(","));
@@ -22,8 +22,7 @@ export function exportCsv(rows: Property[], filename = "properties.csv") {
   triggerDownload(URL.createObjectURL(blob), filename);
 }
 
-/** Generate a PDF table from the current property rows. jsPDF is imported
- * lazily so it stays out of the initial bundle. */
+// Export properties to PDF (lazy-loaded).
 export async function exportPdf(rows: Property[], filename = "properties.pdf") {
   const { default: jsPDF } = await import("jspdf");
   const autoTable = (await import("jspdf-autotable")).default;

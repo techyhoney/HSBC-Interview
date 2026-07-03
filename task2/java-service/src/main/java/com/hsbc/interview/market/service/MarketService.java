@@ -13,8 +13,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
- * Computes aggregate market statistics from the in-memory dataset.
- * Results are cached (Caffeine) since the dataset is static at runtime.
+ * Market statistics and aggregation service with caching.
  */
 @Service
 public class MarketService {
@@ -30,9 +29,6 @@ public class MarketService {
         return statsFor(dataset.all());
     }
 
-    /**
-     * Segmented aggregates grouped by a chosen dimension, with optional filters.
-     */
     @Cacheable("segments")
     public List<SegmentStat> segments(String groupBy, Integer minBedrooms, Integer maxBedrooms,
                                       Integer minYear, Integer maxYear, Double minSchoolRating) {
@@ -54,9 +50,6 @@ public class MarketService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Dataset rows for the responsive data table, with basic filter + sort.
-     */
     public List<Property> properties(Integer minBedrooms, Integer maxBedrooms,
                                      Integer minYear, Integer maxYear, Double minSchoolRating,
                                      String sortBy, String order) {

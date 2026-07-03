@@ -1,4 +1,4 @@
-"""Model service: loads the trained artifact once and serves predictions."""
+"""Model loading and prediction service."""
 import json
 
 import joblib
@@ -9,11 +9,7 @@ from app.schemas import HousingFeatures
 
 
 class ModelService:
-    """Loads the trained model + metrics and exposes prediction helpers.
-
-    Instantiated once at app startup so the artifact is read from disk a
-    single time rather than on every request.
-    """
+    """Loads model and metrics at startup for serving predictions."""
 
     def __init__(self) -> None:
         if not MODEL_PATH.exists():

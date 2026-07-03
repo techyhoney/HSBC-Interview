@@ -1,8 +1,4 @@
-"""Central configuration: paths and the single source of truth for features.
-
-Keeping the feature list here guarantees that training (`train.py`) and serving
-(`app/model.py`) always agree on column names and ordering.
-"""
+"""Configuration for paths and feature definitions."""
 from pathlib import Path
 
 # Project root = parent of the `app` package directory.

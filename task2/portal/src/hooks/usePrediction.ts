@@ -4,9 +4,7 @@ import { useCallback, useState } from "react";
 import { estimate } from "@/lib/api";
 import type { EstimateResponse, HousingFeatures } from "@/lib/types";
 
-/**
- * Encapsulates a single-property estimate request with loading/error state.
- */
+// Hook for property price estimation with state management.
 export function usePrediction() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

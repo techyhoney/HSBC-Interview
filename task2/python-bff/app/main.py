@@ -1,11 +1,4 @@
-"""FastAPI BFF for App 1 (Property Value Estimator).
-
-Responsibilities:
-- Validate incoming property payloads (Pydantic).
-- Forward feature rows to the Task 1 model API `/predict` over HTTP.
-- Return predictions with echoed inputs so the UI needs a single round-trip.
-- Fail gracefully with clear 502/503 messages if the model API is unreachable.
-"""
+"""Property Value Estimator backend service."""
 import os
 
 import httpx
@@ -39,7 +32,7 @@ app.add_middleware(
 
 
 async def _call_model(items: list[HousingFeatures]) -> list[float]:
-    """POST feature rows to the model API and return the predicted prices."""
+    """Call model API for predictions."""
     payload = {"items": [item.model_dump() for item in items]}
     try:
         async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
@@ -69,14 +62,14 @@ async def health() -> HealthResponse:
 
 @app.post("/estimate", response_model=EstimateResponse, tags=["estimate"])
 async def estimate(features: HousingFeatures) -> EstimateResponse:
-    """Estimate the value of a single property."""
+    """Single property estimate."""
     predictions = await _call_model([features])
     return EstimateResponse(predicted_price=predictions[0], features=features)
 
 
 @app.post("/estimate/batch", response_model=BatchEstimateResponse, tags=["estimate"])
 async def estimate_batch(request: BatchEstimateRequest) -> BatchEstimateResponse:
-    """Estimate values for multiple properties (comparison view)."""
+    """Batch property estimates."""
     predictions = await _call_model(request.items)
     estimates = [
         EstimateResponse(predicted_price=price, features=feature)

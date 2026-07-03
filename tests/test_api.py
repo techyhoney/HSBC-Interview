@@ -1,7 +1,4 @@
-"""Endpoint tests using FastAPI's TestClient.
-
-Assumes `python train.py` has been run so model.pkl exists.
-"""
+"""API endpoint tests."""
 import pytest
 from fastapi.testclient import TestClient
 

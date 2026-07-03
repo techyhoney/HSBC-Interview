@@ -1,4 +1,4 @@
-"""FastAPI application exposing the housing price prediction endpoints."""
+"""Housing price prediction API endpoints."""
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
